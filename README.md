@@ -22,9 +22,9 @@ run the ff commands.
 ```sh
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
+python3 -m pip install -r requirements.txt
+python3 manage.py migrate
+python3 manage.py runserver
 ```
 
 default start is at http://127.0.0.1:8000

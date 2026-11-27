@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Tirian Trains{% endblock %}</title>
+</head>
+<body>
+
+
+    <h1>Route List</h1>
+
+    <h2>Routes </h2>
+    {% for route in routes %}
+    {{ route.id }} {{ route.travel_time }} {{ route.cost }} {{ route.type }} <br>
+    {% endfor %}
+</body>
+</html>

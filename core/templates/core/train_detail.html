@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Tirian Trains{% endblock %}</title>
+</head>
+<body>
+
+
+    <h1>Train Detail</h1>
+
+    <h2>Specs and Amenities </h2>
+    {% for train in trains %}
+    {{ train.id }} {{ train.max_speed }} {{ train.number_of_seats }} {{ train.number_of_toilets }}
+    {{ train.reclining_seats }} {{ train.folding_tables }} {{ train.disability_access }} {{ train.luggage_storage }}
+    {{ train.vending_machines }} {{ train.food_service }} {{ train.type}} <br>
+    {% endfor %}
+    <h2>Maintenance Records </h2>
+    {% for record in records %}
+    {{ record.id }} {{ record.train }} {{ record.crew }} {{ record.date }}
+    {{ record.task }} {{ record.condition }} {{ train.disability_access }} <br>
+    {% endfor %}
+</body>
+</html>

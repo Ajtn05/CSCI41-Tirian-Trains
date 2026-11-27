@@ -17,17 +17,38 @@ Railway database covering routes, schedules, tickets, and train maintenance for 
 
 ## Startup
 
-run the ff commands.
+Use Python 3.12 or newer. Run these commands from the repo root.
 
 ```sh
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install -r requirements.txt
 python3 manage.py migrate
+python3 manage.py seed_data
+python3 manage.py createsuperuser
 python3 manage.py runserver
 ```
 
-default start is at http://127.0.0.1:8000
+Open http://127.0.0.1:8000/ and use **Sign in** with the account you created. Staff can inspect sample trains, routes, and trips under **Admin**. The seed command adds one local link, two connecting inter-town trips, train maintenance records, and a two-trip ticket totaling 26 Lion coins. Run it on a development database. Rerunning it reuses the sample records and their original dates.
+
+### PostgreSQL setup
+
+The default database is local SQLite. With PostgreSQL running, create a database and set `PGDATABASE` before applying migrations.
+
+```sh
+export PGDATABASE=tirian_trains
+createdb "$PGDATABASE"
+python3 manage.py migrate
+python3 manage.py seed_data
+```
+
+Set `PGUSER`, `PGPASSWORD`, `PGHOST`, and `PGPORT` if your local connection requires them. Use a fresh database for the app's migrations. The draft in `database/schema.sql` can be run separately against an empty PostgreSQL database.
+
+### Starting feature work
+
+- Add feature URLs in `core/urls.py` and views in `core/views.py`. App templates go in `core/templates/core/` and extend `base.html`. Use the named `login` URL for views that require sign-in.
+- The initial models map the current draft SQL. Supply an explicit ID when creating a railway record with its own integer primary key. The draft allows up to two numbered station slots per inter-town route and has one crew member and task text field per maintenance record.
+- Run `python3 manage.py check` and `python3 manage.py makemigrations --check --dry-run` before merging.
 
 
 ## Working file structure
@@ -38,21 +59,34 @@ csci41-tirian-trains/
 ├── README.md                       
 ├── requirements.txt               
 ├── manage.py                       
+├── database/
+│   └── schema.sql                   # supplied PostgreSQL draft
+├── templates/
+│   ├── base.html                    # shared layout
+│   └── registration/
+│       └── login.html               # sign-in form
 ├── tirian_trains/                   
 │   ├── __init__.py                  
-│   ├── settings.py                  # app registration and local SQLite settings
-│   ├── urls.py                      # project routes, including Django admin
+│   ├── settings.py                  # app registration and database settings
+│   ├── urls.py                      # project routes, sign-in, and admin
 │   ├── asgi.py                      
 │   └── wsgi.py                    
 └── core/                            
     ├── __init__.py                  
     ├── apps.py                      # app configuration
-    ├── models.py                    # where we put the railway models
+    ├── models.py                    # models for the 15 draft railway tables
+    ├── validators.py                # validates dates, initials, and train model codes
     ├── admin.py                     # admin registration
     ├── views.py                     # for request handlers
-    ├── tests.py                     # app tests
-    └── migrations/                  # where the generated schema goes
-        └── __init__.py              
+    ├── urls.py                      # app routes
+    ├── tests.py                     # placeholder for app tests
+    ├── migrations/
+    │   ├── __init__.py
+    │   └── 0001_initial.py          # creates the draft railway tables
+    ├── management/commands/
+    │   └── seed_data.py             # adds sample railway records
+    └── templates/core/
+        └── home.html                # app landing page
 ```
 
 ## Proposed file structure
@@ -77,6 +111,7 @@ csci41-tirian-trains/
 │   ├── __init__.py                  
 │   ├── apps.py                      
 │   ├── models.py                    # defines railway tables, relationships, and constraints
+│   ├── validators.py                # validates dates, initials, and train model codes
 │   ├── admin.py                     # configures staff management of records in Django admin
 │   ├── views.py                     # handles railway pages, filters, and permissions
 │   ├── tests.py                     # tests route rules, maintenance, scheduling, and ticket sales

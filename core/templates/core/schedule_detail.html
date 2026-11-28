@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Trip Schedules</h1>
+    <h2>Details</h2>
+    <p>Train #{{ schedule.train.id }}</p>
+    <p> From {{ route.start_station }} to {{ route.end_station }} ({{schedule.route.type|capfirst}} Route)</p>
+    <p>Departure Time: {{ schedule.departure_time|time:"H:i" }} </p>
+    <p>Arrival Time: {{ schedule.arrival_time|time:"H:i" }} </p>
+    <p>Duration: {{ schedule.route.travel_time}} minutes</p>
+    <p>Cost: {{ schedule.route.cost }} Lion Coins</p>
+    <p><a href="/schedule_list">Return</a></p>
+{% endblock %}

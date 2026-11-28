@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Ticket Lists</h1>
+
+    <table>
+        <thead>
+            <tr>
+            <th scope="col">Ticket #</th>
+            <th scope="col">Purchase Date</th>
+            <th scope="col">Customer #</th>
+            <th scope="col">Customer Name</th>
+            <th scope="col">Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+            <td> {{ ticket.id }} </td> 
+            <td> {{ ticket.purchase_date }} </td>
+            <td> {{ ticket.passenger.id }} </td>
+            <td> {{ ticket.passenger.last_name }}, {{ ticket.passenger.given_name }} {{ ticket.passenger.middle_initial|upper }}.</td>
+            <td> {{ ticket.total_cost }} </td>
+            <td> <a href="{{ ticket.get_absolute_url }}/ticket/{{ ticket.id }}"> More details </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

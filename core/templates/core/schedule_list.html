@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Trip Schedules</h1>
+
+    <table>
+        <thead>
+            <tr>
+            <th scope="col">Train #</th>
+            <th scope="col">Origin</th>
+            <th scope="col">Destination</th>
+            <th scope="col">Departure</th>
+            <th scope="col">Arrival Time</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sched in schedules %}
+            <tr>
+            <td> {{ sched.train.id }} </td> 
+            <td>to fix</td>
+            <td>to fix</td>
+            <td> {{ sched.departure_time|time:"H:i" }} </td>
+            <td> {{ sched.arrival_time|time:"H:i" }} </td>
+            <td> {{ sched.route.travel_time}} </td>
+            <td> {{ sched.route.cost }} </td>
+            <td> <a href="{{ sched.get_absolute_url }}/schedule/{{ sched.id}}"> More details </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
